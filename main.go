@@ -9,6 +9,7 @@ import (
 	"mahasiswa-api-golang/service"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
 )
@@ -17,6 +18,7 @@ func main() {
 	log.Info().Msg("Starting Application")
 	db := config.DatabaseConnection()
 	validate := validator.New()
+	gin.SetMode(gin.ReleaseMode)
 	db.Table("student").AutoMigrate(&model.Students{})
 
 	studentRepository := repository.NewStudentRepositoryImp(db)
