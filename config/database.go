@@ -4,13 +4,18 @@ import (
 	"log"
 	"os"
 
-	"mahasiswa-api-golang/model"
-
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func DatabaseConnection() *gorm.DB {
+	// Load file .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found, using system environment variables")
+	}
+
 	// Ambil DATABASE_URL dari environment variables
 	dsn := os.Getenv("DATABASE_URL")
 
@@ -22,12 +27,6 @@ func DatabaseConnection() *gorm.DB {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
-	}
-
-	// AutoMigrate model Students
-	err = db.AutoMigrate(&model.Students{})
-	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
 	}
 
 	log.Println("Database connection established successfully!")
