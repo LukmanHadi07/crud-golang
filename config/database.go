@@ -18,7 +18,7 @@ func DatabaseConnection() *gorm.DB {
 		log.Println("No .env file found, using system environment variables")
 	}
 
-	dsn := os.Getenv("DATABASE_URL")
+	dsn := os.Getenv("DATABASE_URL") + "?sslmode=require"
 
 	if dsn == "" {
 		log.Fatal("DATABASE_URL not found in environment variables")
